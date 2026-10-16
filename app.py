@@ -2,14 +2,15 @@ import os
 import json
 import io
 import csv
-from flask import Flask, render_template, request, jsonify, Response
+from flask import Flask, render_template, request, jsonify, Response, send_from_directory
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(
     __name__,
     template_folder=os.path.join(BASE_DIR, 'templates'),
-    static_folder=os.path.join(BASE_DIR, 'static')
+    static_folder=os.path.join(BASE_DIR, 'static'),
+    static_url_path='/static'
 )
 
 # -------------------------------------------------------------
@@ -17,6 +18,7 @@ app = Flask(
 # -------------------------------------------------------------
 DATA_FILE = os.path.join(BASE_DIR, 'data', 'startups.json')
 STARTUPS = []
+
 
 def load_data():
     global STARTUPS
@@ -140,10 +142,17 @@ def filter_records(records, search="", domain="", country="", outcome="", stage=
 # -------------------------------------------------------------
 # Routes
 # -------------------------------------------------------------
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    """Explicit static file serving for serverless environments."""
+    static_dir = os.path.join(BASE_DIR, 'static')
+    return send_from_directory(static_dir, filename)
+
 @app.route('/')
 def index():
     """Serves the main dashboard user interface."""
     return render_template('index.html', total_startups_count=f"{len(STARTUPS):,}")
+
 
 @app.route('/api/stats')
 def api_stats():
