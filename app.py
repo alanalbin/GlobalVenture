@@ -149,6 +149,8 @@ def serve_static(filename):
     return send_from_directory(static_dir, filename)
 
 @app.route('/')
+@app.route('/api/index.py')
+@app.route('/api/index')
 def index():
     """Serves the main dashboard user interface."""
     return render_template('index.html', total_startups_count=f"{len(STARTUPS):,}")
