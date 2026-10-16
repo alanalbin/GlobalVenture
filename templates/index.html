@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Startup Insights | Global Venture Analytics Dashboard</title>
+  <meta name="description" content="Modern dark-themed startup intelligence dashboard analyzing 25,000 venture-backed companies across tech domains, outcomes, funding stages, and global hubs.">
+  
+  <!-- Modern Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="brand-logo">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+          <div class="brand-text">
+            <h2>Startup<span class="gradient-text">Insights</span></h2>
+            <span class="brand-subtitle">Venture Intelligence</span>
+          </div>
+        </div>
+        <button class="mobile-close-btn" id="closeSidebarBtn" aria-label="Close Sidebar">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Navigation</div>
+        <a href="#overview" class="nav-item active">
+          <i class="fa-solid fa-gauge-high"></i>
+          <span>Dashboard Overview</span>
+        </a>
+        <a href="#analytics-section" class="nav-item">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Market Analytics</span>
+        </a>
+        <a href="#table-section" class="nav-item">
+          <i class="fa-solid fa-table-list"></i>
+          <span>Startups Directory</span>
+        </a>
+        <a href="#dataset-info" class="nav-item">
+          <i class="fa-solid fa-database"></i>
+          <span>Dataset Specifications</span>
+        </a>
+      </nav>
+
+      <!-- Sidebar Metrics Card -->
+      <div class="sidebar-widget">
+        <div class="widget-header">
+          <i class="fa-solid fa-bolt-lightning text-teal"></i>
+          <span>Cohort Telemetry</span>
+        </div>
+        <div class="widget-stat">
+          <span class="widget-label">Avg Portfolio Runway</span>
+          <span class="widget-val text-teal" id="sidebarRunway">-- mo</span>
+        </div>
+        <div class="widget-stat">
+          <span class="widget-label">Mean Valuation</span>
+          <span class="widget-val text-purple" id="sidebarValuation">--</span>
+        </div>
+        <div class="widget-footer">
+          <span class="status-indicator online"></span>
+          <span>Flask Python Engine Active</span>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="dataset-pill">
+          <i class="fa-solid fa-server text-blue"></i>
+          <span>25,000 Synthetic Cohort</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-wrapper">
+      <!-- Top Navigation Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle-btn" id="openSidebarBtn" aria-label="Open Sidebar">
+            <i class="fa-solid fa-bars-staggered"></i>
+          </button>
+          <div class="page-title-box">
+            <h1>Global Venture Dashboard</h1>
+            <p class="breadcrumbs">Analytics &rsaquo; Cohort 2010–2026 &rsaquo; <strong>{{ total_startups_count }} Records</strong></p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="quick-search-box">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="quickSearchInput" placeholder="Quick search company or tech..." aria-label="Quick search">
+          </div>
+          <button class="btn btn-outline" id="resetAllFiltersBtn" title="Reset all search and dropdown filters">
+            <i class="fa-solid fa-rotate-left"></i>
+            <span>Reset</span>
+          </button>
+          <button class="btn btn-primary" id="topExportBtn" title="Download current filtered dataset as CSV">
+            <i class="fa-solid fa-cloud-arrow-down"></i>
+            <span>Export CSV</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Scrollable Body -->
+      <main class="dashboard-body" id="overview">
+        <!-- Notice Banner -->
+        <div class="notice-card" id="dataset-info">
+          <div class="notice-icon">
+            <i class="fa-solid fa-circle-exclamation"></i>
+          </div>
+          <div class="notice-body">
+            <h4>Simulated Dataset Notice</h4>
+            <p>
+              This intelligence dashboard is loaded with a <strong>25,000-row synthetic/demo startup dataset</strong>. 
+              Company IDs, operational trajectories, funding figures, and outcomes are simulated for educational practice, 
+              portfolio modeling, and data science benchmarking.
+            </p>
+          </div>
+          <div class="notice-badge">
+            <span class="pulse-dot"></span> 25,000 ROWS LOADED
+          </div>
+        </div>
+
+        <!-- KPI Summary Cards -->
+        <section class="kpi-grid">
+          <!-- KPI 1: Total Startups -->
+          <div class="kpi-card card-glow-blue">
+            <div class="kpi-header">
+              <span class="kpi-title">Startups Tracked</span>
+              <div class="kpi-icon-box blue">
+                <i class="fa-solid fa-rocket"></i>
+              </div>
+            </div>
+            <div class="kpi-value-row">
+              <span class="kpi-value" id="kpiTotalStartups">--</span>
+              <span class="kpi-badge" id="kpiPercentageFiltered">100% Active</span>
+            </div>
+            <div class="kpi-footer">
+              <i class="fa-solid fa-shield-halved text-blue"></i>
+              <span>Total records in active filter view</span>
+            </div>
+          </div>
+
+          <!-- KPI 2: Tech Domains -->
+          <div class="kpi-card card-glow-purple">
+            <div class="kpi-header">
+              <span class="kpi-title">Technology Domains</span>
+              <div class="kpi-icon-box purple">
+                <i class="fa-solid fa-layer-group"></i>
+              </div>
+            </div>
+            <div class="kpi-value-row">
+              <span class="kpi-value" id="kpiTotalDomains">--</span>
+              <span class="kpi-subtext">Diverse Sectors</span>
+            </div>
+            <div class="kpi-footer">
+              <i class="fa-solid fa-microchip text-purple"></i>
+              <span>AI, Fintech, ClimateTech & more</span>
+            </div>
+          </div>
+
+          <!-- KPI 3: Total Funding -->
+          <div class="kpi-card card-glow-teal">
+            <div class="kpi-header">
+              <span class="kpi-title">Total Capital Deployed</span>
+              <div class="kpi-icon-box teal">
+                <i class="fa-solid fa-hand-holding-dollar"></i>
+              </div>
+            </div>
+            <div class="kpi-value-row">
+              <span class="kpi-value" id="kpiTotalFunding">--</span>
+              <span class="kpi-badge badge-teal">Simulated USD</span>
+            </div>
+            <div class="kpi-footer">
+              <i class="fa-solid fa-coins text-teal"></i>
+              <span>Aggregated venture funding</span>
+            </div>
+          </div>
+
+          <!-- KPI 4: Countries -->
+          <div class="kpi-card card-glow-amber">
+            <div class="kpi-header">
+              <span class="kpi-title">Global Hubs</span>
+              <div class="kpi-icon-box amber">
+                <i class="fa-solid fa-earth-americas"></i>
+              </div>
+            </div>
+            <div class="kpi-value-row">
+              <span class="kpi-value" id="kpiTotalCountries">--</span>
+              <span class="kpi-subtext">Nations</span>
+            </div>
+            <div class="kpi-footer">
+              <i class="fa-solid fa-globe text-amber"></i>
+              <span>Worldwide regional coverage</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Analytics & Interactive Charts Section -->
+        <section class="charts-section" id="analytics-section">
+          <div class="section-heading">
+            <div>
+              <h3>Market Analytics & Distributions</h3>
+              <p class="section-sub">Dynamic visualizations reacting instantly to all filter combinations</p>
+            </div>
+            <div class="chart-status-badge">
+              <i class="fa-solid fa-chart-simple text-teal"></i> Interactive Chart.js
+            </div>
+          </div>
+
+          <div class="charts-grid">
+            <!-- Chart 1: Outcome Distribution -->
+            <div class="chart-card">
+              <div class="card-head">
+                <div>
+                  <h4>Startups by Company Outcome</h4>
+                  <span class="card-hint">Independent, Acquired, Closed, Public/IPO</span>
+                </div>
+                <div class="chart-pill text-blue">Outcome Split</div>
+              </div>
+              <div class="chart-wrapper doughnut-wrapper">
+                <canvas id="outcomeChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Chart 2: Top Technology Domains -->
+            <div class="chart-card">
+              <div class="card-head">
+                <div>
+                  <h4>Top Technology Domains</h4>
+                  <span class="card-hint">Volume by primary vertical domain</span>
+                </div>
+                <div class="chart-pill text-purple">By Industry</div>
+              </div>
+              <div class="chart-wrapper">
+                <canvas id="domainChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Chart 3: Founding Years Timeline -->
+            <div class="chart-card">
+              <div class="card-head">
+                <div>
+                  <h4>Cohort Founding Velocity</h4>
+                  <span class="card-hint">Annual incorporation timeline 2010–2026</span>
+                </div>
+                <div class="chart-pill text-teal">Yearly Trajectory</div>
+              </div>
+              <div class="chart-wrapper">
+                <canvas id="yearChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Chart 4: Top Countries -->
+            <div class="chart-card">
+              <div class="card-head">
+                <div>
+                  <h4>Top 10 Global Startup Hubs</h4>
+                  <span class="card-hint">Startup count by sovereign jurisdiction</span>
+                </div>
+                <div class="chart-pill text-amber">Geographic Density</div>
+              </div>
+              <div class="chart-wrapper">
+                <canvas id="countryChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Startups Table & Directory Section -->
+        <section class="table-section" id="table-section">
+          <div class="table-card">
+            <div class="table-card-header">
+              <div class="header-left">
+                <h3>Startup Companies Directory</h3>
+                <p class="section-sub">Search, slice, inspect and export all 25,000 records</p>
+              </div>
+              <div class="header-right">
+                <button class="btn btn-outline btn-sm" id="clearFiltersBtn">
+                  <i class="fa-solid fa-filter-circle-xmark"></i> Clear Filters
+                </button>
+                <button class="btn btn-primary btn-sm" id="tableExportBtn">
+                  <i class="fa-solid fa-file-arrow-down"></i> Export Filtered CSV
+                </button>
+              </div>
+            </div>
+
+            <!-- Filter Controls Toolbar -->
+            <div class="filter-toolbar">
+              <div class="search-input-group">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="tableSearchInput" placeholder="Search Company ID, domain, city, country..." aria-label="Search records">
+              </div>
+
+              <div class="filter-select-group">
+                <label for="domainFilter"><i class="fa-solid fa-shapes"></i> Domain:</label>
+                <select id="domainFilter">
+                  <option value="">All Domains</option>
+                </select>
+              </div>
+
+              <div class="filter-select-group">
+                <label for="countryFilter"><i class="fa-solid fa-globe"></i> Country:</label>
+                <select id="countryFilter">
+                  <option value="">All Countries</option>
+                </select>
+              </div>
+
+              <div class="filter-select-group">
+                <label for="outcomeFilter"><i class="fa-solid fa-trophy"></i> Outcome:</label>
+                <select id="outcomeFilter">
+                  <option value="">All Outcomes</option>
+                </select>
+              </div>
+
+              <div class="filter-select-group">
+                <label for="stageFilter"><i class="fa-solid fa-seedling"></i> Stage:</label>
+                <select id="stageFilter">
+                  <option value="">All Stages</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Secondary Toolbar: Sorting & Per Page -->
+            <div class="table-meta-bar">
+              <div class="active-chips" id="activeFilterChips">
+                <span class="no-filter-chip">All filters default</span>
+              </div>
+              <div class="table-controls-right">
+                <div class="control-item">
+                  <label for="sortBySelect">Sort by:</label>
+                  <select id="sortBySelect">
+                    <option value="Company_ID">Company ID</option>
+                    <option value="Total_Funding_USD_Millions">Total Funding</option>
+                    <option value="Valuation_USD_Millions">Valuation</option>
+                    <option value="Founding_Year">Founding Year</option>
+                    <option value="Runway_Months">Runway</option>
+                    <option value="Current_Headcount_2026">Headcount</option>
+                  </select>
+                </div>
+                <div class="control-item">
+                  <button class="btn-sort-toggle" id="sortOrderBtn" title="Toggle Ascending/Descending">
+                    <i class="fa-solid fa-arrow-down-short-wide" id="sortOrderIcon"></i>
+                    <span id="sortOrderText">DESC</span>
+                  </button>
+                </div>
+                <div class="control-item">
+                  <label for="pageSizeSelect">Show:</label>
+                  <select id="pageSizeSelect">
+                    <option value="15" selected>15 / page</option>
+                    <option value="25">25 / page</option>
+                    <option value="50">50 / page</option>
+                    <option value="100">100 / page</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Table Container -->
+            <div class="table-responsive">
+              <table class="data-table" id="startupsTable">
+                <thead>
+                  <tr>
+                    <th>Company ID</th>
+                    <th>Technology Domain</th>
+                    <th>Founded</th>
+                    <th>Location</th>
+                    <th>Funding Stage</th>
+                    <th>Funding ($M)</th>
+                    <th>Valuation ($M)</th>
+                    <th>Runway</th>
+                    <th>Outcome</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="tableBody">
+                  <!-- Dynamic rows rendered via JavaScript -->
+                  <tr class="table-loading-row">
+                    <td colspan="10">
+                      <div class="table-spinner">
+                        <i class="fa-solid fa-circle-notch fa-spin"></i>
+                        <span>Loading cohort records...</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Pagination Bar -->
+            <div class="pagination-footer">
+              <div class="pagination-info" id="paginationInfo">
+                Showing 0 to 0 of 0 records
+              </div>
+              <div class="pagination-nav">
+                <button class="page-btn" id="firstPageBtn" title="First Page" disabled>
+                  <i class="fa-solid fa-angles-left"></i>
+                </button>
+                <button class="page-btn" id="prevPageBtn" title="Previous Page" disabled>
+                  <i class="fa-solid fa-angle-left"></i> Previous
+                </button>
+                <div class="page-numbers-container" id="pageNumbersContainer">
+                  <!-- Page pills populated dynamically -->
+                </div>
+                <button class="page-btn" id="nextPageBtn" title="Next Page">
+                  Next <i class="fa-solid fa-angle-right"></i>
+                </button>
+                <button class="page-btn" id="lastPageBtn" title="Last Page">
+                  <i class="fa-solid fa-angles-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="dashboard-footer">
+        <div class="footer-left">
+          <span>&copy; 2026 <strong>Startup Insights Dashboard</strong>. Built with Python & Flask.</span>
+        </div>
+        <div class="footer-right">
+          <span class="footer-badge"><i class="fa-solid fa-code"></i> Vanilla CSS & JS + Chart.js</span>
+          <span class="footer-badge"><i class="fa-solid fa-flask"></i> Flask 3.x Backend</span>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Company Detail Modal -->
+  <div class="modal-backdrop" id="companyModal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-logo-box" id="modalLogoBox">
+            <i class="fa-solid fa-building"></i>
+          </div>
+          <div>
+            <div class="modal-id-row">
+              <h3 id="modalCompanyId">GTS000000</h3>
+              <span class="badge" id="modalOutcomeBadge">Outcome</span>
+            </div>
+            <p class="modal-sub" id="modalSubhead">Tech Domain &bull; City, Country</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="closeModalBtn" aria-label="Close modal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-section-title">Financial & Valuation Profile</div>
+        <div class="modal-kpi-grid">
+          <div class="modal-kpi">
+            <span class="modal-kpi-lbl">Total Funding</span>
+            <span class="modal-kpi-val text-teal" id="modalFunding">$0.00M</span>
+          </div>
+          <div class="modal-kpi">
+            <span class="modal-kpi-lbl">Estimated Valuation</span>
+            <span class="modal-kpi-val text-blue" id="modalValuation">$0.00M</span>
+          </div>
+          <div class="modal-kpi">
+            <span class="modal-kpi-lbl">Annual Recurring Rev (ARR)</span>
+            <span class="modal-kpi-val text-purple" id="modalARR">$0.00M</span>
+          </div>
+          <div class="modal-kpi">
+            <span class="modal-kpi-lbl">Monthly Burn Rate</span>
+            <span class="modal-kpi-val text-coral" id="modalBurn">$0.00M</span>
+          </div>
+        </div>
+
+        <div class="modal-section-title">Operational Health & Team</div>
+        <div class="modal-meta-grid">
+          <div class="modal-meta-item">
+            <span class="lbl"><i class="fa-regular fa-clock"></i> Runway</span>
+            <span class="val" id="modalRunway">-- months</span>
+          </div>
+          <div class="modal-meta-item">
+            <span class="lbl"><i class="fa-solid fa-calendar-days"></i> Founding Year</span>
+            <span class="val" id="modalFoundingYear">--</span>
+          </div>
+          <div class="modal-meta-item">
+            <span class="lbl"><i class="fa-solid fa-users"></i> Current Headcount (2026)</span>
+            <span class="val" id="modalHeadcount">--</span>
+          </div>
+          <div class="modal-meta-item">
+            <span class="lbl"><i class="fa-solid fa-mountain"></i> Peak Headcount</span>
+            <span class="val" id="modalPeakHeadcount">--</span>
+          </div>
+          <div class="modal-meta-item">
+            <span class="lbl"><i class="fa-solid fa-user-minus"></i> Layoffs (2024-2025)</span>
+            <span class="val" id="modalLayoffs">--</span>
+          </div>
+          <div class="modal-meta-item">
+            <span class="lbl"><i class="fa-solid fa-medal"></i> Investor Tier</span>
+            <span class="val" id="modalInvestorTier">--</span>
+          </div>
+          <div class="modal-meta-item">
+            <span class="lbl"><i class="fa-solid fa-robot"></i> AI Adoption Level</span>
+            <span class="val" id="modalAIAdoption">--</span>
+          </div>
+          <div class="modal-meta-item">
+            <span class="lbl"><i class="fa-solid fa-seedling"></i> Funding Stage</span>
+            <span class="val" id="modalFundingStage">--</span>
+          </div>
+        </div>
+
+        <div class="modal-notice">
+          <i class="fa-solid fa-info-circle"></i>
+          <span>This profile was simulated using parametric venture capital distributions for analytical demonstration.</span>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="modalCloseActionBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom JavaScript Logic -->
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
