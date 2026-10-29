@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -80,12 +80,19 @@
       </div>
 
       <div class="sidebar-footer">
+        <button class="sidebar-theme-btn" id="sidebarThemeBtn" title="Switch between Light and Dark mode" aria-label="Toggle theme">
+          <i class="fa-solid fa-moon" id="sidebarThemeIcon"></i>
+          <span id="sidebarThemeText">Dark Mode</span>
+        </button>
         <div class="dataset-pill">
           <i class="fa-solid fa-server text-primary"></i>
           <span>25,000 Verified Cohort</span>
         </div>
       </div>
     </aside>
+
+    <!-- Mobile Sidebar Backdrop Overlay -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
 
     <!-- Main Content Area -->
     <div class="main-wrapper">
@@ -106,13 +113,17 @@
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
             <input type="text" id="quickSearchInput" placeholder="Quick search company or tech..." aria-label="Quick search">
           </div>
+          <button class="btn btn-outline btn-theme" id="themeToggleBtn" title="Toggle Light / Dark mode" aria-label="Toggle Light and Dark mode">
+            <i class="fa-solid fa-moon" id="themeIcon"></i>
+            <span class="theme-text" id="themeText">Dark</span>
+          </button>
           <button class="btn btn-outline" id="resetAllFiltersBtn" title="Reset all search and dropdown filters">
             <i class="fa-solid fa-rotate-left"></i>
-            <span>Reset</span>
+            <span class="btn-text">Reset</span>
           </button>
           <button class="btn btn-primary" id="topExportBtn" title="Download current filtered dataset as CSV">
             <i class="fa-solid fa-cloud-arrow-down"></i>
-            <span>Export CSV</span>
+            <span class="btn-text">Export CSV</span>
           </button>
         </div>
       </header>
@@ -291,11 +302,11 @@
                 <p class="section-sub">Search, slice, inspect and export all 25,000 records</p>
               </div>
               <div class="header-right">
-                <button class="btn btn-outline btn-sm" id="clearFiltersBtn">
-                  <i class="fa-solid fa-filter-circle-xmark"></i> Clear Filters
+                <button class="btn btn-outline btn-sm" id="clearFiltersBtn" title="Clear All Filters">
+                  <i class="fa-solid fa-filter-circle-xmark"></i> <span class="btn-text">Clear Filters</span>
                 </button>
-                <button class="btn btn-primary btn-sm" id="tableExportBtn">
-                  <i class="fa-solid fa-file-arrow-down"></i> Export Filtered CSV
+                <button class="btn btn-primary btn-sm" id="tableExportBtn" title="Export Filtered CSV">
+                  <i class="fa-solid fa-file-arrow-down"></i> <span class="btn-text">Export CSV</span>
                 </button>
               </div>
             </div>

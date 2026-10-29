@@ -70,14 +70,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeModalBtn = document.getElementById('closeModalBtn');
   const modalCloseActionBtn = document.getElementById('modalCloseActionBtn');
 
-  // Mobile sidebar
+  // Mobile sidebar & Backdrop
   const sidebar = document.getElementById('sidebar');
   const openSidebarBtn = document.getElementById('openSidebarBtn');
   const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+  const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+
+  // Theme Toggle Elements
+  const themeToggleBtn = document.getElementById('themeToggleBtn');
+  const themeIcon = document.getElementById('themeIcon');
+  const themeText = document.getElementById('themeText');
+  const sidebarThemeBtn = document.getElementById('sidebarThemeBtn');
+  const sidebarThemeIcon = document.getElementById('sidebarThemeIcon');
+  const sidebarThemeText = document.getElementById('sidebarThemeText');
 
   // --------------------------------------------------------------------------
-  // Chart Colors & Styling Tokens (Clean Professional Light Theme)
+  // Theme Management (Light & Dark Mode)
   // --------------------------------------------------------------------------
+  const THEME_KEY = 'startup_insights_theme';
+  let currentTheme = localStorage.getItem(THEME_KEY) || 
+    (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+  // Chart Colors & Styling Tokens (Clean Professional Theme Tokens)
   const chartColors = {
     primary: '#2563eb',
     primaryHover: '#1d4ed8',
@@ -88,11 +102,102 @@ document.addEventListener('DOMContentLoaded', () => {
     rose: '#dc2626',
     purple: '#7c3aed',
     palette: ['#2563eb', '#4f46e5', '#059669', '#d97706', '#dc2626', '#0284c7', '#7c3aed', '#0d9488', '#ea580c', '#64748b'],
-    grid: '#f1f5f9',
-    text: '#64748b',
-    textDark: '#0f172a',
+    grid: currentTheme === 'dark' ? 'rgba(255, 255, 255, 0.08)' : '#f1f5f9',
+    text: currentTheme === 'dark' ? '#94a3b8' : '#64748b',
+    textDark: currentTheme === 'dark' ? '#f8fafc' : '#0f172a',
     font: { family: "'Inter', sans-serif", size: 11 }
   };
+
+  function applyTheme(theme, updateCharts = true) {
+    currentTheme = theme;
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem(THEME_KEY, theme);
+
+    const isDark = (theme === 'dark');
+
+    // Update Topbar Theme Button
+    if (themeIcon) {
+      themeIcon.className = isDark ? 'fa-solid fa-sun theme-icon' : 'fa-solid fa-moon theme-icon';
+    }
+    if (themeText) {
+      themeText.textContent = isDark ? 'Light' : 'Dark';
+    }
+    if (themeToggleBtn) {
+      themeToggleBtn.setAttribute('title', isDark ? 'Switch to Light mode' : 'Switch to Dark mode');
+    }
+
+    // Update Sidebar Theme Button
+    if (sidebarThemeIcon) {
+      sidebarThemeIcon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    }
+    if (sidebarThemeText) {
+      sidebarThemeText.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+    }
+
+    // Update Chart theme tokens
+    chartColors.grid = isDark ? 'rgba(255, 255, 255, 0.08)' : '#f1f5f9';
+    chartColors.text = isDark ? '#94a3b8' : '#64748b';
+    chartColors.textDark = isDark ? '#f8fafc' : '#0f172a';
+
+    if (window.Chart) {
+      Chart.defaults.color = chartColors.text;
+    }
+
+    if (updateCharts) {
+      updateChartsTheme(theme);
+    }
+  }
+
+  function toggleTheme() {
+    const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    applyTheme(nextTheme, true);
+  }
+
+  function updateChartsTheme(theme) {
+    const isDark = (theme === 'dark');
+
+    if (outcomeChart) {
+      outcomeChart.data.datasets[0].borderColor = isDark ? '#111827' : '#ffffff';
+      if (outcomeChart.options.plugins && outcomeChart.options.plugins.legend) {
+        outcomeChart.options.plugins.legend.labels.color = chartColors.textDark;
+      }
+      outcomeChart.update();
+    }
+
+    if (domainChart) {
+      if (domainChart.options.scales) {
+        domainChart.options.scales.x.grid.color = chartColors.grid;
+        domainChart.options.scales.x.ticks.color = chartColors.text;
+        domainChart.options.scales.y.ticks.color = chartColors.textDark;
+      }
+      domainChart.update();
+    }
+
+    if (yearChart) {
+      if (yearChart.options.scales) {
+        yearChart.options.scales.x.grid.color = chartColors.grid;
+        yearChart.options.scales.x.ticks.color = chartColors.text;
+        yearChart.options.scales.y.grid.color = chartColors.grid;
+        yearChart.options.scales.y.ticks.color = chartColors.text;
+      }
+      if (yearChart.data.datasets[0]) {
+        yearChart.data.datasets[0].pointBorderColor = isDark ? '#111827' : '#ffffff';
+      }
+      yearChart.update();
+    }
+
+    if (countryChart) {
+      if (countryChart.options.scales) {
+        countryChart.options.scales.y.grid.color = chartColors.grid;
+        countryChart.options.scales.y.ticks.color = chartColors.text;
+        countryChart.options.scales.x.ticks.color = chartColors.textDark;
+      }
+      countryChart.update();
+    }
+  }
+
+  // Initial Theme Boot
+  applyTheme(currentTheme, false);
 
   // Configure Chart.js global defaults
   if (window.Chart) {
@@ -247,6 +352,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const bgColors = outcomeData.labels.map(l => colors[l] || '#2563eb');
 
+    const isDark = (currentTheme === 'dark');
+
     outcomeChart = new Chart(ctx, {
       type: 'doughnut',
       data: {
@@ -255,7 +362,7 @@ document.addEventListener('DOMContentLoaded', () => {
           data: outcomeData.data,
           backgroundColor: bgColors,
           borderWidth: 2,
-          borderColor: '#ffffff',
+          borderColor: isDark ? '#111827' : '#ffffff',
           hoverOffset: 6
         }]
       },
@@ -265,7 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cutout: '68%',
         plugins: {
           legend: {
-            position: 'right',
+            position: window.innerWidth < 640 ? 'bottom' : 'right',
             labels: {
               boxWidth: 12,
               padding: 12,
@@ -363,7 +470,7 @@ document.addEventListener('DOMContentLoaded', () => {
           tension: 0.3,
           fill: true,
           pointBackgroundColor: '#2563eb',
-          pointBorderColor: '#ffffff',
+          pointBorderColor: currentTheme === 'dark' ? '#111827' : '#ffffff',
           pointBorderWidth: 2,
           pointRadius: 4,
           pointHoverRadius: 6
@@ -882,13 +989,65 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Mobile Sidebar Drawer
+  // Theme Toggle Button Listeners
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', toggleTheme);
+  }
+  if (sidebarThemeBtn) {
+    sidebarThemeBtn.addEventListener('click', toggleTheme);
+  }
+
+  // Mobile Sidebar Drawer Controls with Backdrop
+  function openMobileSidebar() {
+    if (sidebar) sidebar.classList.add('open');
+    if (sidebarBackdrop) sidebarBackdrop.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMobileSidebar() {
+    if (sidebar) sidebar.classList.remove('open');
+    if (sidebarBackdrop) sidebarBackdrop.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
   if (openSidebarBtn) {
-    openSidebarBtn.addEventListener('click', () => sidebar.classList.add('open'));
+    openSidebarBtn.addEventListener('click', openMobileSidebar);
   }
   if (closeSidebarBtn) {
-    closeSidebarBtn.addEventListener('click', () => sidebar.classList.remove('open'));
+    closeSidebarBtn.addEventListener('click', closeMobileSidebar);
   }
+  if (sidebarBackdrop) {
+    sidebarBackdrop.addEventListener('click', closeMobileSidebar);
+  }
+
+  // Close sidebar on navigation item click on mobile screens
+  document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      if (window.innerWidth <= 992) {
+        closeMobileSidebar();
+      }
+    });
+  });
+
+  // Handle escape key to close sidebar or modal
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (sidebar && sidebar.classList.contains('open')) {
+        closeMobileSidebar();
+      }
+    }
+  });
+
+  // Responsive Chart adjustments on window resize
+  window.addEventListener('resize', debounce(() => {
+    if (outcomeChart && outcomeChart.options && outcomeChart.options.plugins && outcomeChart.options.plugins.legend) {
+      const newPos = window.innerWidth < 640 ? 'bottom' : 'right';
+      if (outcomeChart.options.plugins.legend.position !== newPos) {
+        outcomeChart.options.plugins.legend.position = newPos;
+        outcomeChart.update();
+      }
+    }
+  }, 250));
 
   // --------------------------------------------------------------------------
   // Initial Boot
