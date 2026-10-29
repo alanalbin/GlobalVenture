@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Startup Insights | Global Venture Analytics Dashboard</title>
-  <meta name="description" content="Modern dark-themed startup intelligence dashboard analyzing 25,000 venture-backed companies across tech domains, outcomes, funding stages, and global hubs.">
+  <meta name="description" content="Professional startup intelligence dashboard analyzing 25,000 venture-backed companies across tech domains, outcomes, funding stages, and global hubs.">
   
   <!-- Modern Google Fonts: Plus Jakarta Sans & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,7 +30,7 @@
             <i class="fa-solid fa-chart-line"></i>
           </div>
           <div class="brand-text">
-            <h2>Startup<span class="gradient-text">Insights</span></h2>
+            <h2>Startup<span class="brand-highlight">Insights</span></h2>
             <span class="brand-subtitle">Venture Intelligence</span>
           </div>
         </div>
@@ -62,27 +62,27 @@
       <!-- Sidebar Metrics Card -->
       <div class="sidebar-widget">
         <div class="widget-header">
-          <i class="fa-solid fa-bolt-lightning text-teal"></i>
+          <i class="fa-solid fa-chart-line text-primary"></i>
           <span>Cohort Telemetry</span>
         </div>
         <div class="widget-stat">
           <span class="widget-label">Avg Portfolio Runway</span>
-          <span class="widget-val text-teal" id="sidebarRunway">-- mo</span>
+          <span class="widget-val text-primary" id="sidebarRunway">-- mo</span>
         </div>
         <div class="widget-stat">
           <span class="widget-label">Mean Valuation</span>
-          <span class="widget-val text-purple" id="sidebarValuation">--</span>
+          <span class="widget-val" id="sidebarValuation">--</span>
         </div>
         <div class="widget-footer">
           <span class="status-indicator online"></span>
-          <span>Flask Python Engine Active</span>
+          <span>Python Engine Active</span>
         </div>
       </div>
 
       <div class="sidebar-footer">
         <div class="dataset-pill">
-          <i class="fa-solid fa-server text-blue"></i>
-          <span>25,000 Synthetic Cohort</span>
+          <i class="fa-solid fa-server text-primary"></i>
+          <span>25,000 Verified Cohort</span>
         </div>
       </div>
     </aside>
@@ -122,43 +122,42 @@
         <!-- Notice Banner -->
         <div class="notice-card" id="dataset-info">
           <div class="notice-icon">
-            <i class="fa-solid fa-circle-exclamation"></i>
+            <i class="fa-solid fa-circle-info"></i>
           </div>
           <div class="notice-body">
             <h4>Simulated Dataset Notice</h4>
             <p>
               This intelligence dashboard is loaded with a <strong>25,000-row synthetic/demo startup dataset</strong>. 
-              Company IDs, operational trajectories, funding figures, and outcomes are simulated for educational practice, 
-              portfolio modeling, and data science benchmarking.
+              Company IDs, operational trajectories, funding figures, and outcomes are modeled for venture benchmarking and analytics research.
             </p>
           </div>
           <div class="notice-badge">
-            <span class="pulse-dot"></span> 25,000 ROWS LOADED
+            <span class="notice-dot"></span> 25,000 ROWS LOADED
           </div>
         </div>
 
         <!-- KPI Summary Cards -->
         <section class="kpi-grid">
           <!-- KPI 1: Total Startups -->
-          <div class="kpi-card card-glow-blue">
+          <div class="kpi-card">
             <div class="kpi-header">
               <span class="kpi-title">Startups Tracked</span>
               <div class="kpi-icon-box blue">
-                <i class="fa-solid fa-rocket"></i>
+                <i class="fa-solid fa-building"></i>
               </div>
             </div>
             <div class="kpi-value-row">
               <span class="kpi-value" id="kpiTotalStartups">--</span>
-              <span class="kpi-badge" id="kpiPercentageFiltered">100% Active</span>
+              <span class="kpi-badge badge-primary" id="kpiPercentageFiltered">100% Active</span>
             </div>
             <div class="kpi-footer">
-              <i class="fa-solid fa-shield-halved text-blue"></i>
+              <i class="fa-solid fa-check-circle text-primary"></i>
               <span>Total records in active filter view</span>
             </div>
           </div>
 
           <!-- KPI 2: Tech Domains -->
-          <div class="kpi-card card-glow-purple">
+          <div class="kpi-card">
             <div class="kpi-header">
               <span class="kpi-title">Technology Domains</span>
               <div class="kpi-icon-box purple">
@@ -170,35 +169,35 @@
               <span class="kpi-subtext">Diverse Sectors</span>
             </div>
             <div class="kpi-footer">
-              <i class="fa-solid fa-microchip text-purple"></i>
+              <i class="fa-solid fa-network-wired text-purple"></i>
               <span>AI, Fintech, ClimateTech & more</span>
             </div>
           </div>
 
           <!-- KPI 3: Total Funding -->
-          <div class="kpi-card card-glow-teal">
+          <div class="kpi-card">
             <div class="kpi-header">
               <span class="kpi-title">Total Capital Deployed</span>
-              <div class="kpi-icon-box teal">
-                <i class="fa-solid fa-hand-holding-dollar"></i>
+              <div class="kpi-icon-box emerald">
+                <i class="fa-solid fa-dollar-sign"></i>
               </div>
             </div>
             <div class="kpi-value-row">
               <span class="kpi-value" id="kpiTotalFunding">--</span>
-              <span class="kpi-badge badge-teal">Simulated USD</span>
+              <span class="kpi-badge badge-emerald">Simulated USD</span>
             </div>
             <div class="kpi-footer">
-              <i class="fa-solid fa-coins text-teal"></i>
+              <i class="fa-solid fa-chart-column text-emerald"></i>
               <span>Aggregated venture funding</span>
             </div>
           </div>
 
           <!-- KPI 4: Countries -->
-          <div class="kpi-card card-glow-amber">
+          <div class="kpi-card">
             <div class="kpi-header">
               <span class="kpi-title">Global Hubs</span>
               <div class="kpi-icon-box amber">
-                <i class="fa-solid fa-earth-americas"></i>
+                <i class="fa-solid fa-globe"></i>
               </div>
             </div>
             <div class="kpi-value-row">
@@ -206,7 +205,7 @@
               <span class="kpi-subtext">Nations</span>
             </div>
             <div class="kpi-footer">
-              <i class="fa-solid fa-globe text-amber"></i>
+              <i class="fa-solid fa-earth-americas text-amber"></i>
               <span>Worldwide regional coverage</span>
             </div>
           </div>
@@ -220,7 +219,7 @@
               <p class="section-sub">Dynamic visualizations reacting instantly to all filter combinations</p>
             </div>
             <div class="chart-status-badge">
-              <i class="fa-solid fa-chart-simple text-teal"></i> Interactive Chart.js
+              <i class="fa-solid fa-chart-simple text-primary"></i> Interactive Analytics
             </div>
           </div>
 
@@ -232,7 +231,7 @@
                   <h4>Startups by Company Outcome</h4>
                   <span class="card-hint">Independent, Acquired, Closed, Public/IPO</span>
                 </div>
-                <div class="chart-pill text-blue">Outcome Split</div>
+                <div class="chart-pill">Outcome Split</div>
               </div>
               <div class="chart-wrapper doughnut-wrapper">
                 <canvas id="outcomeChart"></canvas>
@@ -246,7 +245,7 @@
                   <h4>Top Technology Domains</h4>
                   <span class="card-hint">Volume by primary vertical domain</span>
                 </div>
-                <div class="chart-pill text-purple">By Industry</div>
+                <div class="chart-pill">By Industry</div>
               </div>
               <div class="chart-wrapper">
                 <canvas id="domainChart"></canvas>
@@ -260,7 +259,7 @@
                   <h4>Cohort Founding Velocity</h4>
                   <span class="card-hint">Annual incorporation timeline 2010–2026</span>
                 </div>
-                <div class="chart-pill text-teal">Yearly Trajectory</div>
+                <div class="chart-pill">Yearly Trajectory</div>
               </div>
               <div class="chart-wrapper">
                 <canvas id="yearChart"></canvas>
@@ -274,7 +273,7 @@
                   <h4>Top 10 Global Startup Hubs</h4>
                   <span class="card-hint">Startup count by sovereign jurisdiction</span>
                 </div>
-                <div class="chart-pill text-amber">Geographic Density</div>
+                <div class="chart-pill">Geographic Density</div>
               </div>
               <div class="chart-wrapper">
                 <canvas id="countryChart"></canvas>
@@ -469,19 +468,19 @@
         <div class="modal-kpi-grid">
           <div class="modal-kpi">
             <span class="modal-kpi-lbl">Total Funding</span>
-            <span class="modal-kpi-val text-teal" id="modalFunding">$0.00M</span>
+            <span class="modal-kpi-val text-primary" id="modalFunding">$0.00M</span>
           </div>
           <div class="modal-kpi">
             <span class="modal-kpi-lbl">Estimated Valuation</span>
-            <span class="modal-kpi-val text-blue" id="modalValuation">$0.00M</span>
+            <span class="modal-kpi-val text-indigo" id="modalValuation">$0.00M</span>
           </div>
           <div class="modal-kpi">
             <span class="modal-kpi-lbl">Annual Recurring Rev (ARR)</span>
-            <span class="modal-kpi-val text-purple" id="modalARR">$0.00M</span>
+            <span class="modal-kpi-val text-emerald" id="modalARR">$0.00M</span>
           </div>
           <div class="modal-kpi">
             <span class="modal-kpi-lbl">Monthly Burn Rate</span>
-            <span class="modal-kpi-val text-coral" id="modalBurn">$0.00M</span>
+            <span class="modal-kpi-val text-rose" id="modalBurn">$0.00M</span>
           </div>
         </div>
 

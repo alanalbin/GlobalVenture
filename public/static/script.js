@@ -76,17 +76,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeSidebarBtn = document.getElementById('closeSidebarBtn');
 
   // --------------------------------------------------------------------------
-  // Chart Colors & Styling Tokens
+  // Chart Colors & Styling Tokens (Clean Professional Light Theme)
   // --------------------------------------------------------------------------
   const chartColors = {
-    blue: '#78aaff',
-    purple: '#b7a1ff',
-    teal: '#59e2c2',
-    amber: '#fbbf72',
-    coral: '#fb8da5',
-    palette: ['#78aaff', '#b7a1ff', '#59e2c2', '#fbbf72', '#fb8da5', '#38bdf8', '#a78bfa', '#34d399', '#f472b6', '#facc15'],
-    grid: 'rgba(72, 98, 146, 0.16)',
-    text: '#95a7c4',
+    primary: '#2563eb',
+    primaryHover: '#1d4ed8',
+    indigo: '#4f46e5',
+    indigoHover: '#4338ca',
+    emerald: '#059669',
+    amber: '#d97706',
+    rose: '#dc2626',
+    purple: '#7c3aed',
+    palette: ['#2563eb', '#4f46e5', '#059669', '#d97706', '#dc2626', '#0284c7', '#7c3aed', '#0d9488', '#ea580c', '#64748b'],
+    grid: '#f1f5f9',
+    text: '#64748b',
+    textDark: '#0f172a',
     font: { family: "'Inter', sans-serif", size: 11 }
   };
 
@@ -234,14 +238,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (outcomeChart) outcomeChart.destroy();
 
     const colors = {
-      'Independent': '#59e2c2',
-      'Acquired': '#b7a1ff',
-      'Closed': '#fb8da5',
-      'Public/IPO': '#fbbf72',
-      'Unknown': '#78aaff'
+      'Independent': '#059669',
+      'Acquired': '#4f46e5',
+      'Closed': '#dc2626',
+      'Public/IPO': '#d97706',
+      'Unknown': '#2563eb'
     };
 
-    const bgColors = outcomeData.labels.map(l => colors[l] || '#78aaff');
+    const bgColors = outcomeData.labels.map(l => colors[l] || '#2563eb');
 
     outcomeChart = new Chart(ctx, {
       type: 'doughnut',
@@ -251,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
           data: outcomeData.data,
           backgroundColor: bgColors,
           borderWidth: 2,
-          borderColor: '#121c33',
+          borderColor: '#ffffff',
           hoverOffset: 6
         }]
       },
@@ -265,15 +269,15 @@ document.addEventListener('DOMContentLoaded', () => {
             labels: {
               boxWidth: 12,
               padding: 12,
-              color: chartColors.text,
+              color: chartColors.textDark,
               font: { size: 12, family: "'Inter', sans-serif" }
             }
           },
           tooltip: {
-            backgroundColor: 'rgba(16, 26, 48, 0.95)',
+            backgroundColor: '#0f172a',
             titleColor: '#ffffff',
-            bodyColor: '#e2e8f0',
-            borderColor: 'rgba(120, 170, 255, 0.3)',
+            bodyColor: '#f8fafc',
+            borderColor: '#334155',
             borderWidth: 1,
             padding: 10,
             callbacks: {
@@ -303,9 +307,9 @@ document.addEventListener('DOMContentLoaded', () => {
         datasets: [{
           label: 'Startups Count',
           data: domainData.data,
-          backgroundColor: 'rgba(120, 170, 255, 0.85)',
-          borderRadius: 6,
-          hoverBackgroundColor: '#9bbfff'
+          backgroundColor: '#2563eb',
+          borderRadius: 4,
+          hoverBackgroundColor: '#1d4ed8'
         }]
       },
       options: {
@@ -319,15 +323,18 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           y: {
             grid: { display: false },
-            ticks: { color: '#ffffff', font: { weight: 500 } }
+            ticks: { color: chartColors.textDark, font: { weight: 500 } }
           }
         },
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: 'rgba(16, 26, 48, 0.95)',
-            borderColor: 'rgba(120, 170, 255, 0.3)',
+            backgroundColor: '#0f172a',
+            titleColor: '#ffffff',
+            bodyColor: '#f8fafc',
+            borderColor: '#334155',
             borderWidth: 1,
+            padding: 10,
             callbacks: {
               label: (context) => ` Startups: ${context.parsed.x.toLocaleString()}`
             }
@@ -350,13 +357,13 @@ document.addEventListener('DOMContentLoaded', () => {
         datasets: [{
           label: 'Founded Startups',
           data: yearData.data,
-          borderColor: '#59e2c2',
-          backgroundColor: 'rgba(89, 226, 194, 0.12)',
-          borderWidth: 2.5,
+          borderColor: '#2563eb',
+          backgroundColor: 'rgba(37, 99, 235, 0.08)',
+          borderWidth: 2,
           tension: 0.3,
           fill: true,
-          pointBackgroundColor: '#59e2c2',
-          pointBorderColor: '#121c33',
+          pointBackgroundColor: '#2563eb',
+          pointBorderColor: '#ffffff',
           pointBorderWidth: 2,
           pointRadius: 4,
           pointHoverRadius: 6
@@ -378,9 +385,12 @@ document.addEventListener('DOMContentLoaded', () => {
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: 'rgba(16, 26, 48, 0.95)',
-            borderColor: 'rgba(89, 226, 194, 0.3)',
+            backgroundColor: '#0f172a',
+            titleColor: '#ffffff',
+            bodyColor: '#f8fafc',
+            borderColor: '#334155',
             borderWidth: 1,
+            padding: 10,
             callbacks: {
               label: (ctx) => ` Founded in ${ctx.label}: ${ctx.parsed.y.toLocaleString()} startups`
             }
@@ -403,9 +413,9 @@ document.addEventListener('DOMContentLoaded', () => {
         datasets: [{
           label: 'Startups Count',
           data: countryData.data,
-          backgroundColor: 'rgba(183, 161, 255, 0.82)',
-          borderRadius: 6,
-          hoverBackgroundColor: '#cbbeff'
+          backgroundColor: '#4f46e5',
+          borderRadius: 4,
+          hoverBackgroundColor: '#4338ca'
         }]
       },
       options: {
@@ -415,7 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
           x: {
             grid: { display: false },
             ticks: {
-              color: '#ffffff',
+              color: chartColors.textDark,
               font: { weight: 500, size: 10 },
               maxRotation: 45,
               minRotation: 20
@@ -429,9 +439,12 @@ document.addEventListener('DOMContentLoaded', () => {
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: 'rgba(16, 26, 48, 0.95)',
-            borderColor: 'rgba(183, 161, 255, 0.3)',
+            backgroundColor: '#0f172a',
+            titleColor: '#ffffff',
+            bodyColor: '#f8fafc',
+            borderColor: '#334155',
             borderWidth: 1,
+            padding: 10,
             callbacks: {
               label: (ctx) => ` Startups in ${ctx.label}: ${ctx.parsed.y.toLocaleString()}`
             }
@@ -504,8 +517,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <span style="color:var(--text-faint); font-size:11px;">(${city})</span>
           </td>
           <td><span class="badge badge-stage">${stage}</span></td>
-          <td class="col-numeric text-teal">${funding}</td>
-          <td class="col-numeric text-blue">${valuation}</td>
+          <td class="col-numeric">${funding}</td>
+          <td class="col-numeric">${valuation}</td>
           <td class="col-numeric">${runway}</td>
           <td><span class="badge ${badgeClass}">${outcome}</span></td>
           <td>
