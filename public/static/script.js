@@ -199,11 +199,22 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initial Theme Boot
   applyTheme(currentTheme, false);
 
-  // Configure Chart.js global defaults
+  // Configure Chart.js global defaults with smooth animation curves
   if (window.Chart) {
     Chart.defaults.color = chartColors.text;
     Chart.defaults.font.family = chartColors.font.family;
     Chart.defaults.font.size = chartColors.font.size;
+    Chart.defaults.animation = {
+      duration: 650,
+      easing: 'easeOutQuart'
+    };
+    Chart.defaults.transitions = {
+      active: {
+        animation: {
+          duration: 220
+        }
+      }
+    };
   }
 
   // --------------------------------------------------------------------------
